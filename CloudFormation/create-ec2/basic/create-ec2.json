@@ -1,0 +1,65 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "keyname": {
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "imageid": {
+            "Type": "AWS::EC2::Image::Id",
+            "Default": "ami-024e6efaf93d85776"
+        },
+        "vcpid": {
+            "Type": "AWS::EC2::VPC::Id"
+        },
+        "subnetid": {
+            "Type": "AWS::EC2::Subnet::Id"
+        }
+    },
+    "Resources": {
+        "SecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Allow outbound access to anywhere and inbound SSH access",
+                "SecurityGroupEgress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "Description": "Allow outbound all ports all destinations",
+                        "IpProtocol": "-1"
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "Description": "Allow inbound SSH access from anywhere",
+                        "IpProtocol": "tcp",
+                        "FromPort": 22,
+                        "ToPort": 22
+                    }
+                ],
+                "VpcId": {
+                    "Ref": "vcpid"
+                }
+            }
+        },
+        "EC2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": {
+                    "Ref": "imageid"
+                },
+                "InstanceType": "t2.micro",
+                "KeyName": {
+                    "Ref": "keyname"
+                },
+                "SecurityGroupIds": [
+                    {
+                        "Ref": "SecurityGroup"
+                    }
+                ],
+                "SubnetId": {
+                    "Ref": "subnetid"
+                }
+            }
+        }
+    }
+}

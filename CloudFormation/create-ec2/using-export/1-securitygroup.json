@@ -1,0 +1,40 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "vcpid": {
+            "Type": "AWS::EC2::VPC::Id"
+        }
+    },
+    "Resources": {
+        "SecurityGroup": {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : "Allow outbound access to anywhere and inbound SSH access",
+                "SecurityGroupEgress" : [ {
+                    "CidrIp" : "0.0.0.0/0",
+                    "Description" : "Allow outbound all ports all destinations",
+                    "IpProtocol" : "-1"
+                  } ],
+                "SecurityGroupIngress" : [ {
+                    "CidrIp" : "0.0.0.0/0",
+                    "Description" : "Allow inbound SSH access from anywhere",
+                    "IpProtocol" : "tcp",
+                    "FromPort" : 22,
+                    "ToPort" : 22
+                  } ],
+                "VpcId" : { "Ref": "vcpid" }
+              }
+          }
+    },
+    "Outputs": {
+        "securityGroupId": {
+            "Description": "Exporting security group ID",
+            "Value": {
+                "Ref": "SecurityGroup"
+            },
+            "Export": {
+                "Name": "SecurityGroup-ID"
+            }
+        }
+    }
+}

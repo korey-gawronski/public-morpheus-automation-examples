@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mytestapp
+  namespace: testapp
+  labels:
+    app: testApp
+    environment: dev
+    tier: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: mypod
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP

@@ -1,0 +1,33 @@
+{
+    "Parameters": {
+        "vpcname": {
+            "Type": "String",
+            "Default": "myvpc"
+        }
+    },
+    "Resources": {
+        "MyVPC": {
+            "Type": "AWS::EC2::VPC",
+            "Properties": {
+                "CidrBlock": "10.0.0.0/16",
+                "EnableDnsHostnames": false,
+                "EnableDnsSupport": true,
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "vpcname"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "VpcId": {
+            "Value": {
+                "Ref": "MyVPC"
+            }
+        }
+    }
+}

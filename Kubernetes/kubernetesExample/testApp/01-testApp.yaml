@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mytestapp
+  namespace: testapp
+  labels:
+    app: testApp
+    environment: dev
+    tier: backend
+# Pod deployment
+spec:
+  selector:
+    # App deployment needs to match pods being deployed
+    matchLabels:
+      app: mypod
+  replicas: 5
+  template:
+    metadata:
+      # Pod labels
+      labels:
+        app: mypod
+    spec:
+      containers:
+      - name: dockerexample
+        image: "entizer/dockerexample:latest"
+        ports:
+        - containerPort: 80
